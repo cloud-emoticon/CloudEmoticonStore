@@ -1,13 +1,15 @@
 <?php
 include 'emostore_admin_sqlsetting.php';
-	if (isset($p_POST["Submit"]) && $p_POST["Submit"] == "注册") {
-		if ($p_POST["username"] == "" || $p_POST["password"] == "" || $p_POST["confirm"] == "") {
+	if (isset($_POST["Submit"]) && $_POST["Submit"] == "注册") {
+		if ($_POST["username"] == "" || $_POST["password"] == "" || $_POST["confirm"] == "") {
 			echo "<script>alert('请确认信息完整性！'); history.go(-1);</script>";
 		}else{  
-            if($p_POST["password"] == $p_POST["confirm"]){  
-                mysql_connect($db_host,$db_user,$db_password);   //连接数据库  
-                mysql_select_db("$db_name");  //选择数据库  
-                mysql_query("$query"); //设定字符集  
+            if($_POST["password"] == $_POST["confirm"]){  
+@mysql_connect($db_host,$db_user,$db_password)
+or die("数据库连接失败");
+@mysql_select_db($db_name)
+or die("选择数据库失败");
+                // mysql_query($query); //设定字符集  
                 $sql = "select username from user where username = '$_POST[username]'"; //SQL语句  
                 $result = mysql_query($sql);    //执行SQL语句  
                 $num = mysql_num_rows($result); //统计执行结果影响的行数  
@@ -17,7 +19,8 @@ include 'emostore_admin_sqlsetting.php';
                 }  
                 else    //不存在当前注册用户名称  
                 {  
-                    $sql_insert = "insert into user (username,password,phone,address) values('$_POST[username]','$_POST[password]','','')";  
+                    $pw = md5(md5($_POST[password]));
+                    $sql_insert = "insert into emostoreadmin (username,passcode,userflag) values('$_POST[username]','$pw','0')";
                     $res_insert = mysql_query($sql_insert);  
                     //$num_insert = mysql_num_rows($res_insert);  
                     if($res_insert)  

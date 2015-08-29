@@ -19,7 +19,7 @@ if($row = mysql_fetch_array($query))
     if($row['userflag'] == 1 or $row['userflag'] == 0){
         $_SESSION['username'] = $row['username'];
         $_SESSION['userflag'] = $row['userflag'];
-        echo "<a href='welcome_session_login.php'>登录成功</a>";
+        echo "<a href='emostore_admin_loginstatus.php'>登录成功</a>";
     }else{
         echo "用户组不正确";
     }
