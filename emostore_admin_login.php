@@ -1,5 +1,5 @@
 <?php
-include 'emostore_admin_sqllink.inc';
+include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
 or die("数据库连接失败");
 @mysql_select_db($db_name)
