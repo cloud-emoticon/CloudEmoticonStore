@@ -8,7 +8,7 @@ or die("选择数据库失败");
 $username = $_POST['username'];
 $passcode = $_POST['passcode'];
 //获取session的值
-$query = @mysql_query("select username,userflag from users where username = '$username' and passcode = '$passcode'")
+$query = @mysql_query("select username,userflag from '$user_table' where username = '$username' and passcode = '$passcode'")
 or die("SQL语句执行失败");
 //判断用户以及密码
 if($row = mysql_fetch_array($query))
