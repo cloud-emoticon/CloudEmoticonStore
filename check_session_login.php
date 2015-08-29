@@ -21,9 +21,9 @@ if($row = mysql_fetch_array($query))
         $_SESSION['userflag'] = $row['userflag'];
         echo "<a href='welcome_session_login.php'>登录成功</a>";
     }else{
-        echo "userflag不正确";
+        echo "用户组不正确";
     }
 }else{
-    echo "username或者usercode";
+    echo "用户名或密码不正确";
 }
 ?>
