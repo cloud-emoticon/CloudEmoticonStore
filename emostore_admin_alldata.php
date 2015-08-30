@@ -45,8 +45,8 @@ $keynames = ["内部ID","颜文字源名称","图标网址","登记日期","简�
 			$nowvalue = $arri[$nowkey];
 			echo "<input type=\"text\" name=\"backurl\" value=\"".$nowvalue."\" size=".strlen($nowvalue)." />";
 		}
-		echo "</br><input type=\"submit\" name=\"Submit\" value=\"修改数据\" /></form><a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除数据</a>";
-		echo "<hr>";
+		echo "</br><input type=\"submit\" name=\"Submit\" value=\"修改数据\" /></form>";
+		echo "<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除数据</a><hr>";
 	}
 // }
 ?>
