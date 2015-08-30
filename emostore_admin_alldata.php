@@ -2,10 +2,22 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>源商店内容测试</title>
+	<title>云颜文字·源商店：内容测试</title>
 </head>
 <body>
+当前登录的用户：
 <?php
+session_start();
+if (isset($_SESSION['username'])) {
+	if ($_SESSION['userflag'] == 1) {
+		echo "管理员：".$_SESSION['username']."。<a href='emostore_admin_logout.php'>注销</a>";
+	}
+	if ($_SESSION['userflag'] == 0) {
+		echo "标准用户：".$_SESSION['username']."。<a href='emostore_admin_logout.php'>注销</a>";
+	}
+}else{
+	echo "没有登录任何用户，<a href='login.html'>请先登录</a>。";
+}
 echo "<h1>源商店内容测试</h1>";
 include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
@@ -24,15 +36,9 @@ $arr = array();
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
-// print_r($arr);
 echo "<hr>";
-// if($arr = mysql_fetch_array($query)) {
-// 	echo count($arr)."行<br/>";
-// 	// foreach ($arr as $key => $value) { 
-// 	// 	echo $key.": ".$value."<br />";
-// 	// }
 $keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
-$keynames = ["序号","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
+$keynames = ["内部ID","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
 	for ($i = count($arr) - 1; $i >= 0; $i--) {
 		$arri = $arr[$i];
 		for ($j = 0; $j < count($keys); $j++) {
@@ -40,13 +46,11 @@ $keynames = ["序号","颜文字源名称","图标网址","登记日期","简介
 			echo "</br>".$keynames[$j]."：";
 			print_r($arri[$nowkey]);
 		}
-		// echo $arri[name];
-		// print_r($arri);
-		// print_r($arri['name']);
+		echo "</br><a href=\"emostore_admin_delete.php?id=".$arri["id"]."\">删除数据</a>";
 		echo "<hr>";
-		// echo "<p></p>";
 	}
 // }
 ?>
+<p><a href="emostore_admin_add.php">新增数据</a></p>
 </body>
 </html>
