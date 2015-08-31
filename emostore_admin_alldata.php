@@ -18,39 +18,38 @@ if (isset($_SESSION['username'])) {
 }
 include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
-or die("数据库连接失败");
+or die("<hr><p><b>数据库连接失败</p>");
 @mysql_select_db($db_name)
-or die("选择数据库失败");
+or die("<hr><p><b>选择数据库失败</p>");
 $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
-or die("SQL语句执行失败1");
+or die("<hr><p><b>SQL语句执行失败1</p>");
 $datacount = 0;
 if($arr = mysql_fetch_array($query)) {
 	echo "<hr>SQL数据库中共存储有 ".$arr[0]." 个颜文字源。</br></center>";
 }
 $query = @mysql_query("select * from emostore")
-or die("SQL语句执行失败2");
+or die("<hr><p><b>SQL语句执行失败2</p>");
 $arr = array();
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
 echo "<hr>";
 $keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
-$keynames = ["内部ID","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
+$keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
 	for ($i = count($arr) - 1; $i >= 0; $i--) {
 		$arri = $arr[$i];
-		echo "<form name=\"edit".$arri["id"]."\" method=\"get\" action=\"emostore_admin_edit_do.php\">";
+		echo "<form name=\"edit".$arri["id"]."\" method=\"post\" action=\"emostore_admin_edit_do.php\">";
 		echo "<table border=0 align=\"center\" width=800><tbody><tr><td><img src=\"".$arri["iconurl"]."\" /></td><td></td><tr>";
 		for ($j = 0; $j < count($keys); $j++) {
 			$nowkey = $keys[$j];
 			echo "<tr><td>".$keynames[$j]."</td>";
 			$nowvalue = $arri[$nowkey];
-			echo "<td><input type=\"text\" name=\"txt".$nowkey."\" value=\"".$nowvalue."\" size=100";
+			echo "<td><input type=\"text\" name=\"".$nowkey."\" value=\"".$nowvalue."\" size=100";
 			if ($j == 0) {
-				echo " disabled=\"disabled\"";
+				echo " readonly=\"readonly\"";
 			}
 			echo " /></td></tr>";
 		}
-		
 		echo "<tr><td></td><td><input type=\"submit\" name=\"Submit\" value=\"修改这个源条目\" /></form>";
 		echo "　<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除这个源条目</a></td></tr>";
 		echo "</tbody></table><hr>";
