@@ -38,17 +38,32 @@ $keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl",
 $keynames = ["内部ID","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
 	for ($i = count($arr) - 1; $i >= 0; $i--) {
 		$arri = $arr[$i];
-		echo "<form name=\"edit".$arri["id"]."\" method=\"get\" action=\"emostore_admin_login_do.php\">";
+		echo "<form name=\"edit".$arri["id"]."\" method=\"get\" action=\"emostore_admin_edit_do.php\">";
 		for ($j = 0; $j < count($keys); $j++) {
 			$nowkey = $keys[$j];
 			echo "</br>".$keynames[$j]."：";
 			$nowvalue = $arri[$nowkey];
-			echo "<input type=\"text\" name=\"backurl\" value=\"".$nowvalue."\" size=".strlen($nowvalue)." />";
+			echo "<input type=\"text\" name=\"txt".$nowkey."\" value=\"".$nowvalue."\" size=".strlen($nowvalue);
+			if ($j == 0) {
+				echo " disabled=\"disabled\"";
+			}
+			echo " />";
 		}
-		echo "</br><input type=\"submit\" name=\"Submit\" value=\"修改数据\" /></form>";
-		echo "<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除数据</a><hr>";
+		echo "</br><input type=\"submit\" name=\"Submit\" value=\"修改这个源条目\" /></form>";
+		echo "<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除这个源条目</a><hr>";
 	}
-// }
 ?>
-<p><a href="emostore_admin_add.php">新增数据</a></p>
-</body></html>
+<form name="fangbei" method="post" action="emostore_admin_add_do.php">
+<?php
+		for ($j = 0; $j < count($keys); $j++) {
+			echo "</br>".$keynames[$j]."：";
+			echo "<input type=\"text\" name=\"txtadd\"";
+			if ($j == 0) {
+				echo " disabled=\"disabled\" value=\"新增源条目\"";
+			}
+			echo " />";
+		}
+?>
+</br><input type="submit" name="Submit" value="新增一个源条目" />　<input type="reset" name="Reset" value="重新输入" />
+</form>
+<hr></body></html>
