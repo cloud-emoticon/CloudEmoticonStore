@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>云颜文字·源商店：修改数据</title></head><body>
-<center>云颜文字·源商店<h1>修改数据</h1></center>
+<html><head><meta charset="utf-8"><title>云颜文字·源商店：添加数据</title></head><body>
+<center>云颜文字·源商店<h1>添加数据</h1></center>
 <?php
 session_start();
 if (isset($_SESSION['username'])) {
@@ -20,31 +20,32 @@ include 'emostore_admin_sqlsetting.php';
 or die("<hr><p><b>数据库连接失败</p>");
 @mysql_select_db($db_name)
 or die("<hr><p><b>选择数据库失败</p>");
-$keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
+$keys = ["name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
 $isok = true;
 echo "<hr><table border=0 align=\"center\" width=800><tbody>";
-$sql = "update `emostore` set ";
+$sqlkey = "`";
+$sqlval = "'";
 for ($i = 0; $i < count($keys); $i++) {
 	$nowkey = mysql_real_escape_string($keys[$i]);
     if (isset($_POST[$nowkey])) {
     	$nowval = mysql_real_escape_string($_POST[$nowkey]);
     	echo "<tr><td>".$nowkey."</td><td>".$nowval."</td></tr>";
-    	$sql = $sql."`".$nowkey."`='".$nowval."',";
+    	$sqlkey = $sqlkey.$nowkey."`,`";
+    	$sqlval = $sqlval.$nowval."','";
     } else {
     	echo "找不到参数：".$nowkey."。</br>";
     	$isok = false;
     }
 }
-$sql = substr($sql, 0,strlen($sql)-1);
+$sqlkey = substr($sqlkey, 0,strlen($sqlkey)-2);
+$sqlval = substr($sqlval, 0,strlen($sqlval)-2);
+$sql = "insert `emostore`(".$sqlkey.") values(".$sqlval.");";
 echo "</tbody></table><hr>";
-$sql = $sql." where `id`=".mysql_real_escape_string($_POST["id"]).";";
 if ($isok == false) {
-    die("<hr><p><b>参数不正确，提交修改中止。</b></p>");
+    die("<hr><p><b>参数不正确，提交添加中止。</b></p>");
 }
-//echo $sql."<hr>";
+// echo $sql."<hr>";
 $query = @mysql_query($sql)
 or die("<p><b>SQL语句执行失败。</b></p>");
-echo "<p><b>条目修改成功。</b></p>";
-// $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
-// or die("<hr><p><b>SQL语句执行失败1</p>");
+echo "<p><b>条目添加成功。</b></p>";
 ?><p><a href="emostore_admin_alldata.php">返回源列表</a></p></body></html>

@@ -55,12 +55,12 @@ $keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日�
 		echo "</tbody></table><hr>";
 	}
 ?>
-<form name="fangbei" method="post" action="emostore_admin_add_do.php">
+<form name="addnew" method="post" action="emostore_admin_add_do.php">
 <table border=0 align="center" width=800><tbody>
 <?php
 		for ($j = 0; $j < count($keys); $j++) {
 			echo "<tr><td>".$keynames[$j]."</td>";
-			echo "<td><input type=\"text\" name=\"txtadd\"";
+			echo "<td><input type=\"text\" name=\"".$keys[$j]."\"";
 			if ($j == 0) {
 				echo " disabled=\"disabled\" value=\"新增源条目\"";
 			}
