@@ -10,6 +10,9 @@
 * private protect_white_list 保护白名单
 * private resume_white_list  还原白名单
 * private getval             白名单 key转为value
+
+    $obj = new StrFilter($white, $black);
+    echo $obj->replace($content);
 */
 class StrFilter{ // class start
 
