@@ -52,17 +52,23 @@ $keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日�
 		}
 		echo "<tr><td></td><td><input type=\"submit\" name=\"Submit\" value=\"修改这个源条目\" /></form>";
 		echo "　<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除这个源条目</a></td></tr>";
-		echo "</tbody></table><hr>";
+		echo "</tbody></table>";
 	}
 ?>
+<hr><center>
+<?php
+echo "<上一页　为分页代码预留的位置。　下一页>";
+?>
+</center><hr>
 <form name="addnew" method="post" action="emostore_admin_add_do.php">
 <table border=0 align="center" width=800><tbody>
 <?php
+$defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()),"新增源","匿名","http://","www.","http://","XML1","cloudemoticon://","http://"];
 		for ($j = 0; $j < count($keys); $j++) {
 			echo "<tr><td>".$keynames[$j]."</td>";
-			echo "<td><input type=\"text\" name=\"".$keys[$j]."\"";
+			echo "<td><input type=\"text\" name=\"".$keys[$j]."\" value=\"".$defvals[$j]."\"";
 			if ($j == 0) {
-				echo " disabled=\"disabled\" value=\"新增源条目\"";
+				echo " disabled=\"disabled\"";
 			}
 			echo " size=100 /></td></tr>";
 		}
