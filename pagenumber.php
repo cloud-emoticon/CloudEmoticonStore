@@ -8,9 +8,14 @@
 		$page++;
 	}
 	$pageNUM = array();
-	$nowPageNumber = 0;
+	$nowPageNumber = 1;
 	if (isset($_GET["pagenumber"])) {
 		$nowPageNumber = $_GET["pagenumber"];
+	}
+	if ($nowPageNumber <= 1) {
+		echo "《上一页";
+	} else {
+		echo "<a href='emostore_admin_alldata.php?pagenumber=".($nowPageNumber-1)."'>《上一页</a>";
 	}
 	for ($i=0; $i < $page; $i++) { 
 		$pageNUM[$i] = $i+1;
@@ -24,6 +29,11 @@
 		if ($i != $page-1) {
 			echo " ";
 		}
+	}
+	if ($nowPageNumber >= $page) {
+		echo "下一页》";
+	} else {
+		echo "<a href='emostore_admin_alldata.php?pagenumber=".($nowPageNumber-1)."'>下一页》</a>";
 	}
 	printf($pageNUM);
 ?>

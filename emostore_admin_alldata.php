@@ -3,6 +3,7 @@
 <center>云颜文字·源商店<h1>数据库内容管理</h1></center>
 <center>当前登录的用户：
 <?php
+$pagenumber = 10;//一页内有多少条数据
 session_start();
 if (isset($_SESSION['username'])) {
 	if ($_SESSION['userflag'] == 1) {
@@ -26,8 +27,37 @@ or die("<hr><p><b>SQL语句执行失败1</p>");
 $datacount = 0;
 if($arr = mysql_fetch_array($query)) {
 	echo "<hr>SQL数据库中共存储有 ".$arr[0]." 个颜文字源。</br></center>";
+	$datacount = $arr[0];
 }
-$query = @mysql_query("select * from emostore")
+$nowPageNumber = 1;
+$maxpage = floor($datacount / $pagenumber);
+$yu = $pagenumber;
+if ($datacount % $pagenumber != 0) {
+	$maxpage++;
+	$yu = $datacount % $pagenumber;
+}
+if ($maxpage < 1) {
+	$maxpage = 1;
+}
+if (isset($_GET["pagenumber"])) {
+	$nowPageNumber = mysql_real_escape_string($_GET["pagenumber"]);
+	if ($nowPageNumber < 1) {
+		$nowPageNumber = 1;
+	} else if ($nowPageNumber > $maxpage) {
+		$nowPageNumber = $maxpage;
+	}
+}
+//（当前页页码-1）*每页条数+1
+$formid = ($nowPageNumber-1)*$pagenumber;
+if ($yu > $datacount) {
+	$yu = $datacount;
+}
+$sql2 = "select * from `emoticonstore`.`emostore` order by id desc limit ".$formid.",".$pagenumber.";";
+if ($nowPageNumber >= $maxpage) {
+	$sql2 = "select * from `emoticonstore`.`emostore` order by id desc limit ".$formid.",".$yu.";";
+}
+echo "<hr>".$sql2;
+$query = @mysql_query($sql2)
 or die("<hr><p><b>SQL语句执行失败2</p>");
 $arr = array();
 while ($row=mysql_fetch_array($query)) {
@@ -36,7 +66,7 @@ while ($row=mysql_fetch_array($query)) {
 echo "<hr>";
 $keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
 $keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
-	for ($i = count($arr) - 1; $i >= 0; $i--) {
+	for ($i =  0; $i < count($arr); $i++) {
 		$arri = $arr[$i];
 		echo "<form name=\"edit".$arri["id"]."\" method=\"post\" action=\"emostore_admin_edit_do.php\">";
 		echo "<table border=0 align=\"center\" width=800><tbody><tr><td><img src=\"".$arri["iconurl"]."\" /></td><td></td><tr>";
@@ -57,7 +87,32 @@ $keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日�
 ?>
 <hr><center>
 <?php
-echo "<上一页　为分页代码预留的位置。　下一页>";
+// echo "<上一页　为分页代码预留的位置。　下一页>";
+
+$maxpageNUM = array();
+if ($nowPageNumber <= 1) {
+		echo "《上一页　";
+	} else {
+		echo "<a href='emostore_admin_alldata.php?pagenumber=".($nowPageNumber-1)."'>《上一页</a>　";
+	}
+	for ($i=0; $i < $maxpage; $i++) { 
+		$maxpageNUM[$i] = $i+1;
+
+		if ($nowPageNumber != $i+1) {
+			echo "<a href='emostore_admin_alldata.php?pagenumber=".$maxpageNUM[$i]."'>$maxpageNUM[$i]</a>";
+		}else{
+			echo "<b>$maxpageNUM[$i]</b>";
+		}
+		
+		if ($i != $maxpage-1) {
+			echo " ";
+		}
+	}
+	if ($nowPageNumber >= $maxpage) {
+		echo "　下一页》";
+	} else {
+		echo "　<a href='emostore_admin_alldata.php?pagenumber=".($nowPageNumber+1)."'>下一页》</a>";
+	}
 ?>
 </center><hr>
 <form name="addnew" method="post" action="emostore_admin_add_do.php">
