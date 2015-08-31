@@ -39,31 +39,35 @@ $keynames = ["内部ID","颜文字源名称","图标网址","登记日期","简�
 	for ($i = count($arr) - 1; $i >= 0; $i--) {
 		$arri = $arr[$i];
 		echo "<form name=\"edit".$arri["id"]."\" method=\"get\" action=\"emostore_admin_edit_do.php\">";
+		echo "<table border=0 align=\"center\" width=800><tbody><tr><td><img src=\"".$arri["iconurl"]."\" /></td><td></td><tr>";
 		for ($j = 0; $j < count($keys); $j++) {
 			$nowkey = $keys[$j];
-			echo "</br>".$keynames[$j]."：";
+			echo "<tr><td>".$keynames[$j]."</td>";
 			$nowvalue = $arri[$nowkey];
-			echo "<input type=\"text\" name=\"txt".$nowkey."\" value=\"".$nowvalue."\" size=".strlen($nowvalue);
+			echo "<td><input type=\"text\" name=\"txt".$nowkey."\" value=\"".$nowvalue."\" size=100";
 			if ($j == 0) {
 				echo " disabled=\"disabled\"";
 			}
-			echo " />";
+			echo " /></td></tr>";
 		}
-		echo "</br><input type=\"submit\" name=\"Submit\" value=\"修改这个源条目\" /></form>";
-		echo "<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除这个源条目</a><hr>";
+		
+		echo "<tr><td></td><td><input type=\"submit\" name=\"Submit\" value=\"修改这个源条目\" /></form>";
+		echo "　<a href=\"emostore_admin_delete_do.php?id=".$arri["id"]."\">删除这个源条目</a></td></tr>";
+		echo "</tbody></table><hr>";
 	}
 ?>
 <form name="fangbei" method="post" action="emostore_admin_add_do.php">
+<table border=0 align="center" width=800><tbody>
 <?php
 		for ($j = 0; $j < count($keys); $j++) {
-			echo "</br>".$keynames[$j]."：";
-			echo "<input type=\"text\" name=\"txtadd\"";
+			echo "<tr><td>".$keynames[$j]."</td>";
+			echo "<td><input type=\"text\" name=\"txtadd\"";
 			if ($j == 0) {
 				echo " disabled=\"disabled\" value=\"新增源条目\"";
 			}
-			echo " />";
+			echo " size=100 /></td></tr>";
 		}
 ?>
-</br><input type="submit" name="Submit" value="新增一个源条目" />　<input type="reset" name="Reset" value="重新输入" />
-</form>
-<hr></body></html>
+<tr><td></td><td><input type="submit" name="Submit" value="新增一个源条目" />　<input type="reset" name="Reset" value="重新输入" /></td></tr>
+</form></tbody></table>
+<hr><center>© CloudEmoticonTeam 2015</center></body></html>
