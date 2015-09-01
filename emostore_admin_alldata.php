@@ -23,7 +23,7 @@ or die("<hr><p><b>数据库连接失败</p>");
 @mysql_select_db($db_name)
 or die("<hr><p><b>选择数据库失败</p>");
 $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
-or die("<hr><p><b>SQL语句执行失败1</p>");
+or die("<hr><p><b>SQL语句执行失败，数据量检测失败。</p>");
 $datacount = 0;
 if($arr = mysql_fetch_array($query)) {
 	echo "<hr>SQL数据库中共存储有 ".$arr[0]." 个颜文字源。</br></center>";
@@ -56,9 +56,9 @@ $sql2 = "select * from `emoticonstore`.`emostore` order by id desc limit ".$form
 if ($nowPageNumber >= $maxpage) {
 	$sql2 = "select * from `emoticonstore`.`emostore` order by id desc limit ".$formid.",".$yu.";";
 }
-echo "<hr>".$sql2;
+// echo "<hr>".$sql2;
 $query = @mysql_query($sql2)
-or die("<hr><p><b>SQL语句执行失败2</p>");
+or die("<hr><p><b>SQL语句执行失败，查询数据失败。</p>");
 $arr = array();
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
