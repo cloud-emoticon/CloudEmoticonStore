@@ -11,22 +11,47 @@ or die("ERROR=SQL语句执行失败，查询数据失败。");
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
-toXml($arr,$keys);
+echo toXml($arr,$keys);
+//echo toJson($arr,$keys);
 
+//Extensible Markup Language
 function toXml($arr,$keys)
 {
-	$data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	for ($i =  0; $i < count($arr); $i++) {
 		$arri = $arr[$i];
-		$data = $data."<source id=".$arri["id"].">";
+		$xml = $xml."<source id=".$arri["id"].">";
 		for ($j = 1; $j < count($keys); $j++)
 		{
 			$nowkey = $keys[$j];
 			$nowvalue = $arri[$nowkey];
-			$data = $data."<".$keys[$j].">".$nowvalue."</".$keys[$j].">";
+			$xml = $xml."<".$keys[$j].">".$nowvalue."</".$keys[$j].">";
 		}
-		$data = $data."</source>";
-		echo $data;
+		$xml = $xml."</source>";
+		return $xml;
 	}
 }
+
+//JavaScript Object Notation
+function toJson($arr,$keys)
+{
+	$json = "[";
+	for ($i =  0; $i < count($arr); $i++) {
+		$arri = $arr[$i];
+		$json = $json."{";
+		for ($j = 1; $j < count($keys); $j++)
+		{
+			$nowkey = $keys[$j];
+			$nowvalue = $arri[$nowkey];
+			$json = $json."\"".$keys[$j]."\":\"".$nowvalue."\",";
+		}
+		$json = substr($json, 0, -1);
+		$json = $json."},";
+	}
+	$json = substr($json, 0, -1);
+	$json = $json."]";
+	return $json;
+}
+
+//
 ?>
