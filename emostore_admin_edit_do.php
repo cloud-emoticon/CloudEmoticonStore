@@ -20,7 +20,6 @@ include 'emostore_admin_sqlsetting.php';
 or die("<hr><p><b>数据库连接失败</p>");
 @mysql_select_db($db_name)
 or die("<hr><p><b>选择数据库失败</p>");
-$keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
 $isok = true;
 echo "<hr><table border=0 align=\"center\" width=800><tbody>";
 $sql = "update `emostore` set ";
@@ -47,4 +46,4 @@ or die("<p><b>SQL语句执行失败。</b></p>");
 echo "<p><b>条目修改成功。</b></p>";
 // $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
 // or die("<hr><p><b>SQL语句执行失败1</p>");
-?><p><a href="emostore_admin_alldata.php">返回源列表</a></p></body></html>
+?><p><a href="emostore_admin_alldata.php">返回源列表</a></p><?php echo $footer; ?></body></html>

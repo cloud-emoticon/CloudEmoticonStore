@@ -2,9 +2,11 @@
 <html><head><meta charset="utf-8"><title>云颜文字·源商店：数据库内容管理</title></head><body>
 <center>云颜文字·源商店<h1>数据库内容管理</h1></center>
 <center>当前登录的用户：
-<?php
+<?php 
+
 $pagenumber = 10;//一页内有多少条数据
 session_start();
+include 'emostore_admin_sqlsetting.php';
 if (isset($_SESSION['username'])) {
 	if ($_SESSION['userflag'] == 1) {
 		echo "管理员：".$_SESSION['username']."。<a href='emostore_admin_logout.php?backurl=".$_SERVER['PHP_SELF']."'>注销</a>。";
@@ -17,7 +19,6 @@ if (isset($_SESSION['username'])) {
 	echo "没有登录任何用户，请先<a href='emostore_admin_login_ui.php?backurl=".$_SERVER['PHP_SELF']."'>登录</a>。";
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
-include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
 or die("<hr><p><b>数据库连接失败</b></p>");
 @mysql_select_db($db_name)
@@ -64,8 +65,6 @@ while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
 echo "<hr>";
-$keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
-$keynames = ["内部ID(只读)","颜文字源名称","图标网址","登记日期","简介","维护者","维护者网站","服务器","服务器提供网址","云颜文字数据格式","软件调用网址","源代码网址"];
 	for ($i =  0; $i < count($arr); $i++) {
 		$arri = $arr[$i];
 		echo "<form name=\"edit".$arri["id"]."\" method=\"post\" action=\"emostore_admin_edit_do.php\">";
@@ -135,4 +134,4 @@ $defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()
 <form name="addnew" method="get" action="emostore_admin_cache.php">
 <input type="submit" name="Submit" value="刷新缓存" />
 </form>
-</center></body></html>
+</center><?php echo $footer; ?></body></html>

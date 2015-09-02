@@ -14,4 +14,8 @@ if (isset($_GET['backurl'])) {
 } else {
 	echo "<a href='emostore_admin_login_ui.php'>重新登录</a>";
 }
-?></center></body></html>
+?></center>
+<?php
+include 'emostore_admin_sqlsetting.php';
+echo $footer;
+?></body></html>

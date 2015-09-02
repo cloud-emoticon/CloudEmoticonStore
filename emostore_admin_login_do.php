@@ -34,4 +34,4 @@ if($row = mysql_fetch_array($query))
     if (isset($_POST['backurl'])) {
         echo "<p><a href='".$_POST['backurl']."'>返回登录前页面</a></p>";
     }
-?></center></body></html>
+?></center><?php echo $footer; ?></body></html>

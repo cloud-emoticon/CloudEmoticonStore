@@ -40,4 +40,8 @@
         </dl>
     </div>
 </form>
+<?php
+include 'emostore_admin_sqlsetting.php';
+echo $footer;
+?>
 </body></html>

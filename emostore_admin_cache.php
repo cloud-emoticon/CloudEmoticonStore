@@ -16,7 +16,6 @@ if (isset($_SESSION['username'])) {
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
 include 'emostore_admin_sqlsetting.php';
-$keys = ["id","name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
 @mysql_connect($db_host,$db_user,$db_password)
 or die("<hr><p><b>数据库连接失败</b></p>");
 @mysql_select_db($db_name)
@@ -105,4 +104,5 @@ function toYlt($arr,$keys) {
 	}
 	return $ylt;
 }
+echo $footer;
 ?></body></html>

@@ -2,6 +2,7 @@
 <html><head><meta charset="utf-8"><title>云颜文字·源商店：添加数据</title></head><body>
 <center>云颜文字·源商店<h1>添加数据</h1></center>
 <?php
+include 'emostore_admin_sqlsetting.php';
 session_start();
 if (isset($_SESSION['username'])) {
 	if ($_SESSION['userflag'] == 1) {
@@ -15,17 +16,15 @@ if (isset($_SESSION['username'])) {
 	echo "没有登录任何用户，请先<a href='emostore_admin_login_ui.php?backurl=".$_SERVER['PHP_SELF']."'>登录</a>。";
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
-include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
 or die("<hr><p><b>数据库连接失败</p>");
 @mysql_select_db($db_name)
 or die("<hr><p><b>选择数据库失败</p>");
-$keys = ["name","iconurl","postedon","introduction","creator","creatorurl","server","serverurl","dataformat","installurl","codeurl"];
 $isok = true;
 echo "<hr><table border=0 align=\"center\" width=800><tbody>";
 $sqlkey = "`";
 $sqlval = "'";
-for ($i = 0; $i < count($keys); $i++) {
+for ($i = 1; $i < count($keys); $i++) {
 	$nowkey = mysql_real_escape_string($keys[$i]);
     if (isset($_POST[$nowkey])) {
     	$nowval = mysql_real_escape_string($_POST[$nowkey]);
@@ -48,4 +47,4 @@ if ($isok == false) {
 $query = @mysql_query($sql)
 or die("<p><b>SQL语句执行失败。</b></p>");
 echo "<p><b>条目添加成功。</b></p>";
-?><p><a href="emostore_admin_alldata.php">返回源列表</a></p></body></html>
+?><p><a href="emostore_admin_alldata.php">返回源列表</a></p><?php echo $footer; ?></body></html>
