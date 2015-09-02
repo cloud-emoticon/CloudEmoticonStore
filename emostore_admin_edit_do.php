@@ -46,4 +46,6 @@ or die("<p><b>SQL语句执行失败。</b></p>");
 echo "<p><b>条目修改成功。</b></p>";
 // $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
 // or die("<hr><p><b>SQL语句执行失败1</p>");
-?><p><a href="emostore_admin_alldata.php">返回源列表</a></p><?php echo $footer; ?></body></html>
+?><p><a href="emostore_admin_alldata.php">返回源列表</a>
+<meta http-equiv="Refresh" content="3;URL=emostore_admin_alldata.php">
+</p><?php echo $footer; ?></body></html>

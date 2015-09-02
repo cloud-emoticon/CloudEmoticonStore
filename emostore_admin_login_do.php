@@ -33,5 +33,6 @@ if($row = mysql_fetch_array($query))
 }
     if (isset($_POST['backurl'])) {
         echo "<p><a href='".$_POST['backurl']."'>返回登录前页面</a></p>";
+        echo "<meta http-equiv=\"Refresh\" content=\"3;URL=".$_POST['backurl']."\">";
     }
 ?></center><?php echo $footer; ?></body></html>
