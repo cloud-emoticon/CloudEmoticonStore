@@ -19,11 +19,11 @@ if (isset($_SESSION['username'])) {
 }
 include 'emostore_admin_sqlsetting.php';
 @mysql_connect($db_host,$db_user,$db_password)
-or die("<hr><p><b>数据库连接失败</p>");
+or die("<hr><p><b>数据库连接失败</b></p>");
 @mysql_select_db($db_name)
-or die("<hr><p><b>选择数据库失败</p>");
+or die("<hr><p><b>选择数据库失败</b></p>");
 $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
-or die("<hr><p><b>SQL语句执行失败，数据量检测失败。</p>");
+or die("<hr><p><b>SQL语句执行失败，数据量检测失败。</b></p>");
 $datacount = 0;
 if($arr = mysql_fetch_array($query)) {
 	echo "<hr>SQL数据库中共存储有 ".$arr[0]." 个颜文字源。</br></center>";
@@ -58,7 +58,7 @@ if ($nowPageNumber >= $maxpage) {
 }
 // echo "<hr>".$sql2;
 $query = @mysql_query($sql2)
-or die("<hr><p><b>SQL语句执行失败，查询数据失败。</p>");
+or die("<hr><p><b>SQL语句执行失败，查询数据失败。</b></p>");
 $arr = array();
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
@@ -130,4 +130,9 @@ $defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()
 ?>
 <tr><td></td><td><input type="submit" name="Submit" value="新增一个源条目" />　<input type="reset" name="Reset" value="重新输入" /></td></tr>
 </form></tbody></table>
-<hr><center>© CloudEmoticonTeam 2015</center></body></html>
+<hr><center>
+<b>应用源列表到API接口：</b>
+<form name="addnew" method="get" action="emostore_admin_cache.php">
+<input type="submit" name="Submit" value="刷新缓存" />
+</form>
+</center></body></html>
