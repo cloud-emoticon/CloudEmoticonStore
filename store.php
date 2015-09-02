@@ -11,8 +11,9 @@ or die("ERROR=SQL语句执行失败，查询数据失败。");
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
-echo toXml($arr,$keys);
-//echo toJson($arr,$keys);
+$xmldata = toXml($arr,$keys);
+$jsondata = toJson($arr,$keys);
+$yltdata = toYlt($arr,$keys);
 
 //Extensible Markup Language
 function toXml($arr,$keys)
@@ -39,7 +40,7 @@ function toJson($arr,$keys)
 	for ($i =  0; $i < count($arr); $i++) {
 		$arri = $arr[$i];
 		$json = $json."{";
-		for ($j = 1; $j < count($keys); $j++)
+		for ($j = 0; $j < count($keys); $j++)
 		{
 			$nowkey = $keys[$j];
 			$nowvalue = $arri[$nowkey];
@@ -53,5 +54,23 @@ function toJson($arr,$keys)
 	return $json;
 }
 
-//
+//Yashi Lightweight Table
+function toYlt($arr,$keys) {
+	$ylt = "|#t|main|#c";
+	for ($j = 1; $j < count($keys); $j++) {
+		$nowkey = $keys[$j];
+		$ylt = $ylt."|".$nowkey;
+	}
+	for ($i =  0; $i < count($arr); $i++) {
+		$arri = $arr[$i];
+		$ylt = $ylt."|#r";
+		for ($j = 0; $j < count($keys); $j++)
+		{
+			$nowkey = $keys[$j];
+			$nowvalue = $arri[$nowkey];
+			$ylt = $ylt."|".$nowvalue;
+		}
+	}
+	return $ylt;
+}
 ?>
