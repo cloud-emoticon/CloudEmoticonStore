@@ -18,6 +18,14 @@
                 </div>
             </dd>
             <dd>
+                <div align="center">
+                <br><br><img title="点击刷新" src="validate_image.php" align="absbottom" onclick="this.src='validate_image.php?'+Math.random();"></img>
+                    <br>验证码(深色4字母)：<input type="validate" name="validate" size="4" />
+                    <br>背景字(固定3字母)：<input type="validate2" name="validate2" size="3" />
+                    <br>点击图片刷新,不区分大小写
+                </div>
+            </dd>
+            <dd>
                 <p align="center">
                 <input type="text" name="backurl" hidden=true value=<?php
                 if (isset($_GET['backurl'])) {
