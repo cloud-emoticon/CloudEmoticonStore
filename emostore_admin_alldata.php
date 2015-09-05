@@ -4,7 +4,7 @@
 <center>当前登录的用户：
 <?php 
 
-$pagenumber = 10;//一页内有多少条数据
+$pagenumber = 5;//一页内有多少条数据
 session_start();
 include 'emostore_admin_sqlsetting.php';
 if (isset($_SESSION['username'])) {
@@ -133,5 +133,8 @@ $defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()
 <b>应用源列表到API接口：</b>
 <form name="addnew" method="get" action="emostore_admin_cache.php">
 <input type="submit" name="Submit" value="刷新缓存" />
-</form>
+</form>查看当前缓存：
+<a href="emostore.xml" target="_blank"> XML</a>
+<a href="emostore.json" target="_blank"> JSON</a>
+<a href="emostore.ylt" target="_blank"> YLT</a>
 </center><?php echo $footer; ?></body></html>
