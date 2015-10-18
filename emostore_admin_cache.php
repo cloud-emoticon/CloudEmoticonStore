@@ -26,6 +26,10 @@ or die("<hr><p><b>SQL语句执行失败，查询数据失败。</b></p>");
 while ($row=mysql_fetch_array($query)) {
 	$arr[] = $row;
 }
+// $keyerr = count($arr[0]) - count($keys);
+// if ($keyerr != 0) {
+// 	die("<hr><p><b>配置键值对不匹配，差异".$keyerr."。</b></p>");
+// }
 $datetime = date("y-m-d h:i:s",time());
 $xmldata = toXml($arr,$keys,$datetime);
 savefile($xmldata,"emostore.xml");
@@ -34,7 +38,12 @@ savefile($jsondata,"emostore.json");
 $yltdata = toYlt($arr,$keys);
 savefile($yltdata,"emostore.ylt");
 savefile($datetime,"updatetime.txt");
-echo "<hr><a href=\"emostore_admin_alldata.php\">返回源管理</a>";
+$padata = toPhparray($arr,$keys);
+savefile($padata,"phparray.txt");
+$padata = toHtml($arr,$keys,$datetime);
+savefile($padata,"index.html");
+
+echo "<hr><a href=\"emostore_admin_alldata.php\">返回源管理</a>　<b><a href=\"http://emoticon.moe/store/reload.php\">下一步:将内容分发到emoticon.moe</a></b>";
 
 function savefile($data,$filename)
 {
@@ -88,8 +97,8 @@ function toJson($arr,$keys)
 //Yashi Lightweight Table
 function toYlt($arr,$keys) {
 	$ylt = "|#t|main|#c";
-	for ($j = 1; $j < count($keys); $j++) {
-		$nowkey = $keys[$j];
+	for ($h = 0; $h < count($keys); $h++) {
+		$nowkey = $keys[$h];
 		$ylt = $ylt."|".$nowkey;
 	}
 	for ($i =  0; $i < count($arr); $i++) {
@@ -103,6 +112,24 @@ function toYlt($arr,$keys) {
 		}
 	}
 	return $ylt;
+}
+
+//PHPArray
+function toPhparray($arr,$keys) {
+	$pa = "arr = ".serialize($arr).";;   keys = ".serialize($keys).";;   ";
+	return $pa;
+}
+
+//HTML
+function toHtml($arr,$keys,$datetime) {
+	$htmla = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><meta name=\"viewport\" http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8; initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width\"><title>Cloud Emoticon Library</title><style type=\"text/css\">body{background-repeat:no-repeat;background-image:url()}</style></head><body bgcolor=\"#133518\" text=\"#CFCFCF\" link=\"#CFCFCF\" vlink=\"#CFCFCF\" alink=\"#FFFFFF\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\"><div id=\"web_bg\" style=\"position:absolute;width:100%;height:100%;z-index:-1\"><img style=\"position:fixed\" src=\"Background.jpg\" height=\"100%\" width=\"100%\"></div><table width=\"100%\" border=\"0\"><tbody><tr><td height=\"51\" colspan=\"3\" align=\"center\"><p><img src=\"logo.png\" width=\"300\" height=\"79\" alt=\"\"></p></td></tr>";
+	$htmlc = "<tr><td colspan=\"3\" align=\"center\">(C) 云颜文字社区 2015 / 神楽坂雅詩<br>上次更新日期：".$datetime."<br><a href=\"https://yoooooooooo.com/emoticon/store/admin.php\" target=\"_blank\">后台管理</a>｜<a href=\"http://emoticon.moe/\" target=\"_blank\">项目主页</a></td></tr>";
+	$htmlb = "";
+	for ($i =  0; $i < count($arr); $i++) {
+		$arri = $arr[$i];
+		$htmlb = $htmlb."<tr><td width=\"120\"><img src=\"".$arri["iconurl"]."\" width=\"120\" height=\"120\" alt=\"\"/></td><td><h3>".$arri["name"]."</h3><p>".$arri["postedon"]." ".$arri["creator"]."<br>".$arri["dataformat"]." ".$arri["server"]."<br>".$arri["introduction"]."</p></td><td align=\"center\"><h3><a href=\"".$arri["installurl"]."\"><img src=\"plus.png\" width=\"28\" height=\"28\" alt=\"\"/></a></h3><p><a href=\"".$arri["codeurl"]."\"><img src=\"code.png\" width=\"36\" height=\"28\" alt=\"\"/></a></p></td></tr>";
+	}
+	return $htmla.$htmlb.$htmlc;
 }
 echo $footer;
 ?></body></html>

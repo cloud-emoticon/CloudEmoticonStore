@@ -117,7 +117,7 @@ if ($nowPageNumber <= 1) {
 <form name="addnew" method="post" action="emostore_admin_add_do.php">
 <table border=0 align="center" width=800><tbody>
 <?php
-$defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()),"新增源","匿名","http://","www.","http://","XML1","cloudemoticon://","http://"];
+$defvals = ["新增源条目","新建颜文字源","http://",date("Y-m-d",time()),"新增源","匿名","http://","www.","http://","XML1","cloudemoticon://","http://","n"];
 		for ($j = 0; $j < count($keys); $j++) {
 			echo "<tr><td>".$keynames[$j]."</td>";
 			echo "<td><input type=\"text\" name=\"".$keys[$j]."\" value=\"".$defvals[$j]."\"";
