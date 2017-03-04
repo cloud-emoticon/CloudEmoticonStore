@@ -16,16 +16,14 @@ if (isset($_SESSION['username'])) {
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
 include 'emostore_admin_sqlsetting.php';
-@mysql_connect($db_host,$db_user,$db_password)
-or die("<hr><p><b>数据库连接失败</b></p>");
-@mysql_select_db($db_name)
-or die("<hr><p><b>选择数据库失败</b></p>");
+$linkID = db_connect();
 $sql = "select * from `emoticonstore`.`emostore`";
-$query = @mysql_query($sql)
+$query = mysqli_query($linkID,$sql)
 or die("<hr><p><b>SQL语句执行失败，查询数据失败。</b></p>");
-while ($row=mysql_fetch_array($query)) {
+while ($row=mysqli_fetch_array($query)) {
 	$arr[] = $row;
 }
+mysqli_close($linkID);
 // $keyerr = count($arr[0]) - count($keys);
 // if ($keyerr != 0) {
 // 	die("<hr><p><b>配置键值对不匹配，差异".$keyerr."。</b></p>");

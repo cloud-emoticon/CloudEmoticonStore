@@ -16,17 +16,14 @@ if (isset($_SESSION['username'])) {
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
 include 'emostore_admin_sqlsetting.php';
-@mysql_connect($db_host,$db_user,$db_password)
-or die("<hr><p><b>数据库连接失败</p>");
-@mysql_select_db($db_name)
-or die("<hr><p><b>选择数据库失败</p>");
+$linkID = db_connect();
 $isok = true;
 echo "<hr><table border=0 align=\"center\" width=800><tbody>";
 $sql = "update `emostore` set ";
 for ($i = 0; $i < count($keys); $i++) {
-	$nowkey = mysql_real_escape_string($keys[$i]);
+	$nowkey = mysqli_real_escape_string($linkID,$keys[$i]);
     if (isset($_POST[$nowkey])) {
-    	$nowval = mysql_real_escape_string($_POST[$nowkey]);
+    	$nowval = mysqli_real_escape_string($linkID,$_POST[$nowkey]);
     	echo "<tr><td>".$nowkey."</td><td>".$nowval."</td></tr>";
     	$sql = $sql."`".$nowkey."`='".$nowval."',";
     } else {
@@ -36,13 +33,14 @@ for ($i = 0; $i < count($keys); $i++) {
 }
 $sql = substr($sql, 0,strlen($sql)-1);
 echo "</tbody></table><hr>";
-$sql = $sql." where `id`=".mysql_real_escape_string($_POST["id"]).";";
+$sql = $sql." where `id`=".mysqli_real_escape_string($linkID,$_POST["id"]).";";
 if ($isok == false) {
     die("<hr><p><b>参数不正确，提交修改中止。</b></p>");
 }
 //echo $sql."<hr>";
-$query = @mysql_query($sql)
+$query = mysqli_query($linkID,$sql)
 or die("<p><b>SQL语句执行失败。</b></p>");
+mysqli_close($linkID);
 echo "<p><b>条目修改成功。</b></p>";
 // $query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
 // or die("<hr><p><b>SQL语句执行失败1</p>");

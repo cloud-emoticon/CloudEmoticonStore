@@ -19,14 +19,11 @@ if (isset($_SESSION['username'])) {
 	echo "没有登录任何用户，请先<a href='emostore_admin_login_ui.php?backurl=".$_SERVER['PHP_SELF']."'>登录</a>。";
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
-@mysql_connect($db_host,$db_user,$db_password)
-or die("<hr><p><b>数据库连接失败</b></p>");
-@mysql_select_db($db_name)
-or die("<hr><p><b>选择数据库失败</b></p>");
-$query = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
+$linkID = db_connect();
+$query = mysqli_query($linkID,"select count(*) from `emoticonstore`.`emostore`")
 or die("<hr><p><b>SQL语句执行失败，数据量检测失败。</b></p>");
 $datacount = 0;
-if($arr = mysql_fetch_array($query)) {
+if($arr = mysqli_fetch_array($query)) {
 	echo "<hr>SQL数据库中共存储有 ".$arr[0]." 个颜文字源。</br></center>";
 	$datacount = $arr[0];
 }
@@ -41,7 +38,7 @@ if ($maxpage < 1) {
 	$maxpage = 1;
 }
 if (isset($_GET["pagenumber"])) {
-	$nowPageNumber = mysql_real_escape_string($_GET["pagenumber"]);
+	$nowPageNumber = mysqli_real_escape_string($linkID,$_GET["pagenumber"]);
 	if ($nowPageNumber < 1) {
 		$nowPageNumber = 1;
 	} else if ($nowPageNumber > $maxpage) {
@@ -58,10 +55,11 @@ if ($nowPageNumber >= $maxpage) {
 	$sql2 = "select * from `emoticonstore`.`emostore` order by id desc limit ".$formid.",".$yu.";";
 }
 // echo "<hr>".$sql2;
-$query = @mysql_query($sql2)
+$query = mysqli_query($linkID,$sql2)
 or die("<hr><p><b>SQL语句执行失败，查询数据失败。</b></p>");
+mysqli_close($linkID);
 $arr = array();
-while ($row=mysql_fetch_array($query)) {
+while ($row=mysqli_fetch_array($query)) {
 	$arr[] = $row;
 }
 echo "<hr>";

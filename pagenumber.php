@@ -1,8 +1,9 @@
 <?php
 	$pagenumber = 2;//一页内有多少条数据
 
-	$pageAll = @mysql_query("select count(*) from `emoticonstore`.`emostore`")
+	$pageAll = mysqli_query("select count(*) from `emoticonstore`.`emostore`")
 	or die("SQL语句执行失败");
+	// mysqli_close($linkID);
 	$page = $pageAll / $pagenumber;
 	if ($pageAll % $pagenumber != 0) {
 		$page++;

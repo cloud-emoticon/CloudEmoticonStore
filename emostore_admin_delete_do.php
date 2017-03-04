@@ -16,21 +16,19 @@ if (isset($_SESSION['username'])) {
 	die("<hr><p><b>访问受限：</b>必须使用管理员账户登录才可以继续哦。</p>");
 }
 include 'emostore_admin_sqlsetting.php';
-@mysql_connect($db_host,$db_user,$db_password)
-or die("<hr><p><b>数据库连接失败</p>");
-@mysql_select_db($db_name)
-or die("<hr><p><b>选择数据库失败</p>");
+$linkID = db_connect();
 $id = "0";
 if (isset($_GET["id"])) {
-	$id = mysql_real_escape_string($_GET["id"]);
+	$id = mysqli_real_escape_string($linkID,$_GET["id"]);
 } else if (isset($_POST["id"])) {
-	$id = mysql_real_escape_string($_POST["id"]);
+	$id = mysqli_real_escape_string($linkID,$_POST["id"]);
 } else {
 	die("<hr><p><b>请求参数错误。</p>");
 }
 $sql = "delete from `emostore` where `id`=".$id.";";
-$query = @mysql_query($sql)
+$query = mysqli_query($linkID,$sql)
 or die("<p><b>SQL语句执行失败。</b></p>");
+mysqli_close($linkID);
 echo "<p><b>条目删除成功。</b></p>";
 ?><p><a href="emostore_admin_alldata.php">返回源列表</a>
 <meta http-equiv="Refresh" content="3;URL=emostore_admin_alldata.php">
