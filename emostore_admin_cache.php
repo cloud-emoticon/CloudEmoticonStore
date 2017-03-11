@@ -2,6 +2,10 @@
 <html><head><meta charset="utf-8"><title>云颜文字·源商店：创建APP接口缓存</title></head><body>
 <center>云颜文字·源商店<h1>创建APP接口缓存</h1></center>
 <?php
+//
+$relativepath = "userimg/"; //设置为"/"=当前层级文件夹。
+$absolutepath = "http://emoticon.moe/store/"; //设为null可以使用相对路径。
+//
 session_start();
 if (isset($_SESSION['username'])) {
 	if ($_SESSION['userflag'] == 1) {
@@ -23,15 +27,25 @@ or die("<hr><p><b>SQL语句执行失败，查询数据失败。</b></p>");
 while ($row=mysqli_fetch_array($query)) {
 	$arr[] = $row;
 }
+/*
+
+			if ($nowkey == "iconurl") {
+				$nowvalue = $relativepath.$nowvalue;
+				if ($isabsolutepath) {
+					$nowvalue = $absolutepath.$nowvalue;
+				}
+			}
+*/
 mysqli_close($linkID);
 // $keyerr = count($arr[0]) - count($keys);
 // if ($keyerr != 0) {
 // 	die("<hr><p><b>配置键值对不匹配，差异".$keyerr."。</b></p>");
 // }
 $datetime = date("y-m-d h:i:s",time());
-$xmldata = toXml($arr,$keys,$datetime);
+$arr = addpath($arr,$relativepath,$absolutepath);
+$xmldata = toXml($arr,$keys,$datetime,$furi);
 savefile($xmldata,"emostore.xml");
-$jsondata = toJson($arr,$keys);
+$jsondata = toJson($arr,$keys,$furi);
 savefile($jsondata,"emostore.json");
 $yltdata = toYlt($arr,$keys);
 savefile($yltdata,"emostore.ylt");
@@ -43,6 +57,19 @@ savefile($padata,"index.html");
 
 echo "<hr><a href=\"emostore_admin_alldata.php\">返回源管理</a>　<b><a href=\"http://emoticon.moe/store/reload.php\">下一步:将内容分发到emoticon.moe</a></b>";
 
+function addpath($arr,$relativepath,$absolutepath) {
+	$newarr = [];
+	for ($i =  0; $i < count($arr); $i++) {
+		$arri = $arr[$i];
+		$arri["iconurl"] = $relativepath.$arri["iconurl"];
+		if ($absolutepath) {
+			$arri["iconurl"] = $absolutepath.$arri["iconurl"];
+		}
+		$newarr[$i] = $arri;
+	}
+	return $newarr;
+}
+
 function savefile($data,$filename)
 {
 	$myfile = fopen($filename, "w")
@@ -53,7 +80,7 @@ function savefile($data,$filename)
 }
 
 //Extensible Markup Language
-function toXml($arr,$keys,$datetime)
+function toXml($arr,$keys,$datetime,$isabsolutepath)
 {
 	$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><cloudemoticonstore updatetime=\"".$datetime."\">";
 	for ($i =  0; $i < count($arr); $i++) {
@@ -72,7 +99,7 @@ function toXml($arr,$keys,$datetime)
 }
 
 //JavaScript Object Notation
-function toJson($arr,$keys)
+function toJson($arr,$keys,$absolutepath)
 {
 	$json = "[";
 	for ($i =  0; $i < count($arr); $i++) {
