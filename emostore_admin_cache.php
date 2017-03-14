@@ -61,6 +61,9 @@ function addpath($arr,$relativepath,$absolutepath) {
 	$newarr = [];
 	for ($i =  0; $i < count($arr); $i++) {
 		$arri = $arr[$i];
+		if ($arri["iconurl"] == "") {
+			$arri["iconurl"] = "akarin.jpg";
+		}
 		$arri["iconurl"] = $relativepath.$arri["iconurl"];
 		if ($absolutepath) {
 			$arri["iconurl"] = $absolutepath.$arri["iconurl"];
